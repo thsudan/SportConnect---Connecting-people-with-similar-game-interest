@@ -6,6 +6,7 @@ const app = require('./app');  // Import your app
 const server = http.createServer(app);
 const io = socketIo(server);
 
+// Socket.IO setup
 io.on('connection', (socket) => {
   console.log('A user connected');
   socket.on('disconnect', () => {
@@ -17,10 +18,19 @@ io.on('connection', (socket) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
+// Function to start the server
+const startServer = (port = 3000) => {
+  return new Promise((resolve, reject) => {
+    server.listen(port, () => {
+      console.log(`Server is running on http://localhost:${port}`);
+      resolve();
+    });
+  });
+};
 
-server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// Only start the server if this file is run directly
+if (require.main === module) {
+  startServer();
+}
 
-module.exports = server;  // Export the server
+module.exports = { server, startServer };
