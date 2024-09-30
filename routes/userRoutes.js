@@ -17,4 +17,7 @@ router.get('/logout', userController.logout);
 
 router.get('/search-by-sport', userController.renderSportsList);
 
+router.get('/sports-list/:sport', userController.renderSportsListBySport);
+router.get('/player-details/:id', userController.renderPlayerDetails);
+
 module.exports = router;
