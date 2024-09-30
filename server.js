@@ -32,6 +32,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/', userRoutes);
 
+app.get('/search-based-on-location', (req, res) => {
+  res.render('locationSearch');
+});
+
 io.on('connection', (socket) => {
   console.log('A user connected');
   socket.on('disconnect', () => {

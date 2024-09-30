@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by Sport</title>
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .navbar {
+            background-color: #004d40;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .navbar a {
+            color: #fafafa;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #026753;
+            color: #ffffff;
+        }
+
+        .content {
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/dashboardimg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .headline {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 21px;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+            width: 80%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container input, .search-container button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .sports-list {
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .sport-card {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .sport-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .navbar a {
+                padding: 8px 10px;
+            }
+            .content, .headline {
+                padding: 10px;
+                text-align: justify;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+       
+        <div class="headline">
+            <h1>SEARCH BY SPORTS</h1>
+            <p>Find and connect with players and enthusiasts in your selected favorite sports.</p>
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search sports..." id="search-input">
+            <button onclick="filterSports()">Search</button>
+        </div>
+        <div class="sports-list" id="sports-list">
+            <div class="sport-card"><p>Football</p></div>
+            <div class="sport-card"><p>Basketball</p></div>
+            <div class="sport-card"><p>Soccer</p></div>
+            <div class="sport-card"><p>Tennis</p></div>
+            <div class="sport-card"><p>Cricket</p></div>
+            <div class="sport-card"><p>Table Tennis</p></div>
+            <div class="sport-card"><p>Snooker</p></div>
+            <div class="sport-card"><p>Pool</p></div>
+            <div class="sport-card"><p>Marathon</p></div>
+            <div class="sport-card"><p>Hockey</p></div>
+            <div class="sport-card"><p>Handball</p></div>
+            <div class="sport-card"><p>Horse Racing</p></div>
+            <div class="sport-card"><p>Bike Racing</p></div>
+            <div class="sport-card"><p>Rugby</p></div>
+            <div class="sport-card"><p>Motoring</p></div>
+            <div class="sport-card"><p>Surfing</p></div>
+        </div>
+    </div>
+
+    <script>
+        function filterSports() {
+    var input = document.getElementById('search-input');
+    var filter = input.value.toUpperCase();
+    var ul = document.getElementById('sports-list');
+    var cards = ul.getElementsByClassName('sport-card');
+
+    for (var i = 0; i < cards.length; i++) {
+        var txtValue = cards[i].textContent || cards[i].innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            cards[i].style.display = "";
+        } else {
+            cards[i].style.display = "none";
+        }
+    }
+}
+    </script>
+
+    <script src="/js/materialize.min.js"></script>
+</body>
+</html>

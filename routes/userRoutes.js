@@ -15,4 +15,6 @@ router.get('/dashboard', userController.renderDashboard);
 
 router.get('/logout', userController.logout);
 
+router.get('/search-by-sport', userController.renderSportsList);
+
 module.exports = router;

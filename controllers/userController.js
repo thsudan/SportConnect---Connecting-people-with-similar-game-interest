@@ -68,3 +68,10 @@ exports.logout = (req, res) => {
 exports.renderSignupSuccess = (req, res) => {
   res.render('signupSuccess');
 };
+
+exports.renderSportsList = (req, res) => {
+  // You could potentially pass a list of sports from your database here
+  const sports = ["Football", "Basketball", "Baseball"]; // Example static list
+  res.render('sportsList', { sports });
+};
+

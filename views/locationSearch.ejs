@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search by Location</title>
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .content {
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/locationImg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+        }
+
+        .headline {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 21px;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+            width: 80%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container input, .search-container button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        .locations-list {
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .location-card {
+            background-color: #fff;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .location-card:hover {
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="headline">
+            <h1>SEARCH BY LOCATION</h1>
+            <p>Find and connect with players and enthusiasts near you.</p>
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search locations..." id="search-input">
+            <button onclick="filterLocations()">Search</button>
+        </div>
+        <div class="locations-list" id="locations-list">
+            <!-- Dynamically populated list of locations -->
+        </div>
+    </div>
+
+    <script>
+        function filterLocations() {
+            var input = document.getElementById('search-input');
+            var filter = input.value.toUpperCase();
+            var ul = document.getElementById('locations-list');
+            var cards = ul.getElementsByClassName('location-card');
+
+            for (var i = 0; i < cards.length; i++) {
+                var txtValue = cards[i].textContent || cards[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    cards[i].style.display = "";
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+
+    <script src="/js/materialize.min.js"></script>
+</body>
+</html>
