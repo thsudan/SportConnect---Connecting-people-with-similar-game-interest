@@ -4,75 +4,86 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <!-- Materialize CSS -->
     <link rel="stylesheet" href="/css/materialize.min.css">
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="/style.css">
+    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0; /* Added to remove default margin */
+            font-family: 'Arial', sans-serif;
+            box-sizing: border-box;
+        }
 
-body, html {
-    width: 100%;
-    height: 100%;
-    font-family: 'Arial', sans-serif;
-    padding: 0;
-    box-sizing: border-box;
-}
+        .navbar {
+            background-color: #004d40;
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap; /* Added for better responsiveness */
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
 
-.navbar {
-    background-color: #004d40;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
+        .navbar a {
+            color: #fafafa;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 3px;
+            transition: background 0.3s, color 0.3s;
+        }
 
-.navbar a {
-    color: #fafafa;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: background 0.3s, color 0.3s;
-}
+        .navbar a:hover {
+            background-color: #026753;
+            color: #ffffff;
+        }
 
-.navbar a:hover {
-    background-color: #026753;
-    color: #ffffff;
-}
+        .content {
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/dashboardimg.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #ffffff;
+            min-height: calc(100vh - 64px); /* Adjusted to fill viewport minus navbar height */
+        }
 
-.content {
-    background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/dashboardimg.png');
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    color: #ffffff;
-}
+        .headline {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 21px;
+            border-radius: 5px; 
+            margin: 10px;
+            text-align: center;
+            width: 80%; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
 
-.headline {
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 21px;
-    border-radius: 5px; 
-    margin: 10px;
-    text-align: center;
-    width: 80%; 
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-}
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+            }
 
-/* Additional styling for responsiveness and aesthetics */
-@media (max-width: 768px) {
-    .navbar a {
-        padding: 8px 10px; /* Smaller padding for smaller screens */
-    }
+            .navbar a {
+                padding: 8px 10px;
+                margin: 5px 0;
+            }
 
-    .content, .headline {
-        padding: 10px; /* Less padding to accommodate smaller screens */
-        text-align: justify; /* Improve readability on small devices */
-    }
-}
+            .headline {
+                width: 100%;
+            }
 
+            .content, .headline {
+                padding: 10px;
+                text-align: justify;
+            }
+        }
     </style>
 </head>
 <body>
@@ -86,9 +97,12 @@ body, html {
     
     <div class="content">
         <div class="headline">
-            <h1>COLLEGE FOOTBALL SEASON EXPLAINED</h1>
-            <p>When it comes to college football, the term "redshirt" often pops up in conversations. But what does it really mean, and why is it essential for certain student-athletes? To get...</p>
+            <h1>Explore and Engage: Your Gateway to Local Sports and Services</h1>
+            <p>Looking to join fellow sports enthusiasts or find sports services in your area? SportConnect brings local sports communities together. Whether you're a seasoned athlete or a weekend warrior, find your team/center and start playing today!</p>
         </div>
     </div>
+
+    <!-- Materialize JS (optional) -->
+    <script src="/js/materialize.min.js"></script>
 </body>
 </html>

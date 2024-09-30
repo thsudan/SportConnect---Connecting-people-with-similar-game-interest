@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search by Location</title>
+    <!-- Materialize CSS -->
     <link rel="stylesheet" href="/css/materialize.min.css">
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="/style.css">
+    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body, html {
@@ -13,11 +15,12 @@
             height: 100%;
             font-family: 'Arial', sans-serif;
             padding: 0;
+            margin: 0; /* Added to remove default margin */
             box-sizing: border-box;
         }
 
         .content {
-            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/locationImg.png');
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/sportssenter.png');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -26,6 +29,7 @@
             justify-content: center;
             padding: 20px;
             color: #ffffff;
+            min-height: 100vh; /* Ensures content fills the viewport height */
         }
 
         .headline, .map-container {
@@ -57,6 +61,23 @@
             padding: 10px;
             margin: 5px;
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .headline, .map-container {
+                width: 100%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-container input, .search-container button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -74,6 +95,7 @@
         </div>
     </div>
 
+    <!-- JavaScript -->
     <script>
         let map, infoWindow, directionsService, directionsRenderer;
 
@@ -154,7 +176,9 @@
             infoWindow.open(map);
         }
     </script>
+    <!-- Materialize JS (optional) -->
     <script src="/js/materialize.min.js"></script>
+    <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUX794y5u1d8F-L9tGsp0uuHkJSoiXwfA&callback=initMap&libraries=places" async defer></script>
 </body>
 </html>

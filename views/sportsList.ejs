@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Search by Sport</title>
+    <!-- Materialize CSS -->
     <link rel="stylesheet" href="/css/materialize.min.css">
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="/style.css">
+    <!-- Material Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         body, html {
@@ -13,24 +16,34 @@
             height: 100%;
             font-family: 'Arial', sans-serif;
             padding: 0;
+            margin: 0; /* Added to remove default margin */
             box-sizing: border-box;
         }
 
         .navbar {
-            background-color: #004d40;
+            background-color: #b7642a;
+            top: 5px;
+            border-radius: 30px;
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap; /* Added for responsiveness */
             box-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .navbar a {
             color: #fafafa;
-            padding: 10px 15px;
+            padding: 25px 35px;
+            font-size: 16px; 
+            top: -35px;
             text-decoration: none;
-            border-radius: 3px;
+            border-radius: 10px;
             transition: background 0.3s, color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 50px; /* Adjusts spacing between buttons */
         }
 
         .navbar a:hover {
@@ -39,16 +52,18 @@
         }
 
         .content {
-            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/dashboardimg.png');
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/image2.png');
+            top: 560px;
             background-size: cover;
             background-position: center;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Changed from center to flex-start */
             padding: 20px;
             color: #ffffff;
             overflow: hidden;
+            min-height: 100vh; /* Ensure content fills the viewport height */
         }
 
         .headline {
@@ -65,6 +80,7 @@
             margin-top: 20px;
             display: flex;
             justify-content: center;
+            flex-wrap: wrap; /* Added for responsiveness */
         }
 
         .search-container input, .search-container button {
@@ -77,7 +93,7 @@
             max-height: 500px;
             overflow-y: auto;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Adjusted for responsiveness */
             gap: 20px;
             padding: 20px;
         }
@@ -86,22 +102,32 @@
             background-color: #fff;
             color: #333;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
+            padding: 50px;
             border-radius: 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            font-size: 20px;
             cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
         .sport-card:hover {
             box-shadow: 0 8px 16px rgba(0,0,0,0.2);
             transform: scale(1.05);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
+        .sports-list {
+            width: 100%;
+            max-height: 500px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* Now only 3 columns per row */
+            gap: 20px;
+            padding: 20px;
+        }
         .player-button {
             background-color: #026753;
             color: #ffffff;
@@ -125,7 +151,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 700px;
+            width: 90%; /* Adjusted for mobile devices */
+            max-width: 700px;
             background: white;
             padding: 20px;
             border-radius: 5px;
@@ -136,15 +163,30 @@
         @media (max-width: 768px) {
             .navbar a {
                 padding: 8px 10px;
+                margin: 5px 0;
+            }
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
             }
             .content, .headline {
                 padding: 10px;
                 text-align: justify;
             }
+            .sports-list {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
+    <div class="navbar">
+        <!-- Add your navigation links here -->
+        <a href="/" class="btn waves-effect waves-light">HOME</a>
+        <a href="/search-by-sport" class="btn waves-effect waves-light">Search by Sport</a>
+        <a href="/search-based-on-location" class="btn waves-effect waves-light">Search based on Location</a>
+        <a href="/logout" class="btn waves-effect waves-light">Logout</a>
+    </div>
     <div class="content">
         <div class="headline">
             <h1>SEARCH BY SPORTS</h1>
@@ -165,18 +207,20 @@
             <div class="sport-card" onclick="showPlayers('Bike Racing')"><p>Bike Racing</p></div>
             <div class="sport-card" onclick="showPlayers('Pool')"><p>Pool</p></div>
             <div class="sport-card" onclick="showPlayers('Hockey')"><p>Hockey</p></div>
-            <div class="sport-card" onclick="showPlayers('Hand Ball')"><p>Hand Ball</p></div>
+            <div class="sport-card" onclick="showPlayers('Handball')"><p>Handball</p></div>
             <div class="sport-card" onclick="showPlayers('Horse Racing')"><p>Horse Racing</p></div>
             <div class="sport-card" onclick="showPlayers('Surfing')"><p>Surfing</p></div>
         </div>
     </div>
 
+    <!-- Player Modal -->
     <div id="playerModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px; border-radius:5px; box-shadow:2px 2px 10px rgba(0,0,0,0.5); z-index:1000;">
         <h4 id="modalTitle">Players List</h4>
         <ul id="playerList"></ul>
         <button onclick="closeModal()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #004d40; color: white; border: none; border-radius: 3px; cursor: pointer;">Close</button>
     </div>
 
+    <!-- Player Details Modal -->
     <div id="detailsModal">
         <h4>Player Details</h4>
         <p id="playerName">Name: </p>
@@ -185,52 +229,52 @@
         <p id="playerEmail">Email: </p>
         <p id="playerSocial">Social: </p>
         <p id="playerAddress">Address: </p>
-        <button onclick="closeDetailsModal()">Close</button>
+        <button onclick="closeDetailsModal()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #004d40; color: white; border: none; border-radius: 3px; cursor: pointer;">Close</button>
     </div>
     
-
+    <!-- JavaScript -->
     <script>
         function showPlayers(sport) {
-    var players = {
-        'Football': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
-        'Basketball': [ 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine'],
-        'Soccer': ['Sudan Thapa', 'Aashish Bohora','Sunil Ghorasaine',],
-        'Cricket': ['Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
-        'Table Tennis': ['Sudan Thapa', 'Aashish Bohora'],
-        'Rugby': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
-        'Motoring': ['Sudan Thapa', 'Shahrukh khan','Sitam Gautam','Sanjay Dutt','Samita Bhandari'],
-        'Bike Racing': ['Sudan Thapa', 'Marquez','Sam','Samita Bhandari'],
-        'Pool': ['Sudan Thapa','Sunil Ghorasaine','Mendely'],
-        'Hockey': ['Donald Trump', 'Karan','Sitam Gautam','Sunil Ghorasaine'],
-        'Handball': ['Sudan Thapa','Aashish Bohora','Salman Khan','Sunil Ghorasaine'],
-        'Horse Racing': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Valention Rossi','Samita Bhandari'],
-    }[sport];
+            var players = {
+                'Football': ['Sudan Thapa', 'Aashish Bohora', 'Sitam Gautam', 'Sunil Ghorasaine', 'Samita Bhandari'],
+                'Basketball': ['Aashish Bohora', 'Sitam Gautam', 'Sunil Ghorasaine'],
+                'Soccer': ['Sudan Thapa', 'Aashish Bohora', 'Sunil Ghorasaine'],
+                'Cricket': ['Aashish Bohora', 'Sitam Gautam', 'Sunil Ghorasaine', 'Samita Bhandari'],
+                'Table Tennis': ['Sudan Thapa', 'Aashish Bohora'],
+                'Rugby': ['Sudan Thapa', 'Aashish Bohora', 'Sitam Gautam', 'Sunil Ghorasaine', 'Samita Bhandari'],
+                'Motoring': ['Sudan Thapa', 'Shahrukh Khan', 'Sitam Gautam', 'Sanjay Dutt', 'Samita Bhandari'],
+                'Bike Racing': ['Sudan Thapa', 'Marquez', 'Sam', 'Samita Bhandari'],
+                'Pool': ['Sudan Thapa', 'Sunil Ghorasaine', 'Mendely'],
+                'Hockey': ['Donald Trump', 'Karan', 'Sitam Gautam', 'Sunil Ghorasaine'],
+                'Handball': ['Sudan Thapa', 'Aashish Bohora', 'Salman Khan', 'Sunil Ghorasaine'],
+                'Horse Racing': ['Sudan Thapa', 'Aashish Bohora', 'Sitam Gautam', 'Valentino Rossi', 'Samita Bhandari'],
+                'Surfing': ['John Doe', 'Jane Smith']
+            };
 
-    var modal = document.getElementById('playerModal');
-    var list = document.getElementById('playerList');
-    list.innerHTML = '';
-    players.forEach(function(player) {
-        var button = document.createElement('button');
-        button.classList.add('player-button');
-        button.textContent = player;
-        button.onclick = function() { showPlayerDetails(player, sport); };
-        list.appendChild(button);
-    });
+            var modal = document.getElementById('playerModal');
+            var list = document.getElementById('playerList');
+            list.innerHTML = '';
+            players[sport].forEach(function(player) {
+                var button = document.createElement('button');
+                button.classList.add('player-button');
+                button.textContent = player;
+                button.onclick = function() { showPlayerDetails(player, sport); };
+                list.appendChild(button);
+            });
 
-    document.getElementById('modalTitle').textContent = sport + ' Players';
-    modal.style.display = 'block';
-}
+            document.getElementById('modalTitle').textContent = sport + ' Players';
+            modal.style.display = 'block';
+        }
 
-        function showPlayerDetails(playerName, sport) {
-
+        function showPlayerDetails(playerName) {
             var details = {
-            name: playerName,
-            age: '25',
-            contact: '123-456-7890',
-            email: 'example@example.com',
-            social: playerName,
-            address: '123 Main St, City'
-        };
+                name: playerName,
+                age: '25',
+                contact: '123-456-7890',
+                email: 'not available',
+                social: playerName,
+                address: '123 Main St, City'
+            };
 
             document.getElementById('playerName').textContent = 'Name: ' + details.name;
             document.getElementById('playerAge').textContent = 'Age: ' + details.age;
@@ -238,18 +282,17 @@
             document.getElementById('playerEmail').textContent = 'Email: ' + details.email;
             document.getElementById('playerSocial').textContent = 'Social: ' + details.social;
             document.getElementById('playerAddress').textContent = 'Address: ' + details.address;
-    
+
             document.getElementById('detailsModal').style.display = 'block';
         }
 
-            function closeModal() {
+        function closeModal() {
             document.getElementById('playerModal').style.display = 'none';
         }
 
-            function closeDetailsModal() {
+        function closeDetailsModal() {
             document.getElementById('detailsModal').style.display = 'none';
         }
-
 
         function filterSports() {
             var input = document.getElementById('search-input');
@@ -265,6 +308,7 @@
             });
         }
     </script>
+    <!-- Materialize JS (optional) -->
     <script src="/js/materialize.min.js"></script>
 </body>
 </html>
