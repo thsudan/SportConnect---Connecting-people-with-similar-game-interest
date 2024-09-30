@@ -39,7 +39,7 @@
         }
 
         .map-container {
-            height: 400px; /* Set the height of the map */
+            height: 400px;
         }
 
         #map {
@@ -66,7 +66,7 @@
             <p>Find and connect with players and enthusiasts near you.</p>
         </div>
         <div class="search-container">
-            <input type="text" placeholder="Search locations..." id="search-input">
+            <input type="text" placeholder="Search places or services" id="search-input">
             <button onclick="searchLocations()">Search</button>
         </div>
         <div class="map-container">
@@ -75,68 +75,83 @@
     </div>
 
     <script>
+        let map, infoWindow, directionsService, directionsRenderer;
+
         function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 6
+            });
+            infoWindow = new google.maps.InfoWindow();
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var userLocation = {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const pos = {
                         lat: position.coords.latitude,
                         lng: position.coords.longitude
                     };
 
-                    var mapOptions = {
-                        center: userLocation,
-                        zoom: 12
-                    };
-
-                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-                    window.map = map;
-
-                    new google.maps.Marker({
-                        position: userLocation,
-                        map: map,
-                        title: 'Your Location'
-                    });
-                }, function() {
-                    handleLocationError(true, window.map.getCenter());
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Location found.');
+                    infoWindow.open(map);
+                    map.setCenter(pos);
+                }, () => {
+                    handleLocationError(true, map.getCenter());
                 });
             } else {
-                handleLocationError(false);
+                handleLocationError(false, map.getCenter());
             }
         }
 
         function searchLocations() {
-            var searchText = document.getElementById('search-input').value;
-            var request = {
-                location: window.map.getCenter(),
+            const searchText = document.getElementById('search-input').value;
+            const request = {
+                location: map.getCenter(),
                 radius: '5000',
                 query: searchText
             };
 
-            var service = new google.maps.places.PlacesService(window.map);
-            service.textSearch(request, function(results, status) {
+            const service = new google.maps.places.PlacesService(map);
+            service.textSearch(request, (results, status) => {
                 if (status === google.maps.places.PlacesServiceStatus.OK) {
-                    results.forEach(function(place) {
-                        new google.maps.Marker({
-                            position: place.geometry.location,
-                            map: window.map,
-                            title: place.name
-                        });
+                    map.setCenter(results[0].geometry.location);
+                    results.forEach(place => {
+                        createMarker(place);
                     });
-
-                    if (results[0]) {
-                        window.map.setCenter(results[0].geometry.location);
-                    }
                 }
             });
         }
 
+        function createMarker(place) {
+            const marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location
+            });
+
+            google.maps.event.addListener(marker, 'click', () => {
+                directionsService.route({
+                    origin: map.getCenter(),
+                    destination: place.geometry.location,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, (response, status) => {
+                    if (status === 'OK') {
+                        directionsRenderer.setDirections(response);
+                    } else {
+                        window.alert('Directions request failed due to ' + status);
+                    }
+                });
+            });
+        }
+
         function handleLocationError(browserHasGeolocation, pos) {
-            var infoWindow = new google.maps.InfoWindow({map: window.map});
             infoWindow.setPosition(pos);
             infoWindow.setContent(browserHasGeolocation ?
-                                  'Error: The Geolocation service failed.' :
-                                  'Error: Your browser doesn\'t support geolocation.');
-            infoWindow.open(window.map);
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
         }
     </script>
     <script src="/js/materialize.min.js"></script>
