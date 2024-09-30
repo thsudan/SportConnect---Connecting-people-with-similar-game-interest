@@ -28,7 +28,7 @@
             color: #ffffff;
         }
 
-        .headline {
+        .headline, .map-container {
             background-color: rgba(255, 255, 255, 0.1);
             padding: 21px;
             border-radius: 5px;
@@ -36,6 +36,15 @@
             text-align: center;
             width: 80%;
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .map-container {
+            height: 400px; /* Set the height of the map */
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
         }
 
         .search-container {
@@ -47,35 +56,6 @@
         .search-container input, .search-container button {
             padding: 10px;
             margin: 5px;
-        }
-
-        .locations-list {
-            width: 100%;
-            max-height: 500px;
-            overflow-y: auto;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .location-card {
-            background-color: #fff;
-            color: #333;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            padding: 20px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-
-        .location-card:hover {
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-            transform: scale(1.05);
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
     </style>
 </head>
@@ -89,12 +69,20 @@
             <input type="text" placeholder="Search locations..." id="search-input">
             <button onclick="filterLocations()">Search</button>
         </div>
-        <div class="locations-list" id="locations-list">
-            <!-- Dynamically populated list of locations -->
+        <div class="map-container">
+            <div id="map"></div>
         </div>
     </div>
 
     <script>
+        function initMap() {
+            var mapOptions = {
+                center: { lat: -34.397, lng: 150.644 }, // Default center (Update as needed)
+                zoom: 8
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        }
+
         function filterLocations() {
             var input = document.getElementById('search-input');
             var filter = input.value.toUpperCase();
@@ -113,5 +101,6 @@
     </script>
 
     <script src="/js/materialize.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUX794y5u1d8F-L9tGsp0uuHkJSoiXwfA&callback=initMap" async defer></script>
 </body>
 </html>
