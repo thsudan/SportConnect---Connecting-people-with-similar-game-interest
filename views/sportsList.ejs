@@ -102,25 +102,35 @@
             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        #playerModal {
+        .player-button {
+            background-color: #026753;
+            color: #ffffff;
+            border: none;
+            padding: 10px;
+            margin: 5px 0;
+            display: block;
+            width: 100%;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .player-button:hover {
+            background-color: #004d40;
+        }
+
+        #detailsModal {
             display: none;
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            width: 700px;
             background: white;
             padding: 20px;
             border-radius: 5px;
             box-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-            z-index: 1000;
-        }
-
-        #playerModal ul {
-            list-style: none;
-        }
-
-        #playerModal li {
-            margin: 10px 0;
+            z-index: 1010;
         }
 
         @media (max-width: 768px) {
@@ -167,31 +177,79 @@
         <button onclick="closeModal()" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; background-color: #004d40; color: white; border: none; border-radius: 3px; cursor: pointer;">Close</button>
     </div>
 
+    <div id="detailsModal">
+        <h4>Player Details</h4>
+        <p id="playerName">Name: </p>
+        <p id="playerAge">Age: </p>
+        <p id="playerContact">Contact: </p>
+        <p id="playerEmail">Email: </p>
+        <p id="playerSocial">Social: </p>
+        <p id="playerAddress">Address: </p>
+        <button onclick="closeDetailsModal()">Close</button>
+    </div>
+    
+
     <script>
         function showPlayers(sport) {
-            var players = {
-                'Football': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
-                'Basketball': ['Sitam Bhandari', 'Samita Gautam', 'Sunil Ghorasaine'],
-                'Soccer': ['Sitam Gautam', 'Aashish Bohora']
+    var players = {
+        'Football': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
+        'Basketball': [ 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine'],
+        'Soccer': ['Sudan Thapa', 'Aashish Bohora','Sunil Ghorasaine',],
+        'Cricket': ['Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
+        'Table Tennis': ['Sudan Thapa', 'Aashish Bohora'],
+        'Rugby': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Sunil Ghorasaine','Samita Bhandari'],
+        'Motoring': ['Sudan Thapa', 'Shahrukh khan','Sitam Gautam','Sanjay Dutt','Samita Bhandari'],
+        'Bike Racing': ['Sudan Thapa', 'Marquez','Sam','Samita Bhandari'],
+        'Pool': ['Sudan Thapa','Sunil Ghorasaine','Mendely'],
+        'Hockey': ['Donald Trump', 'Karan','Sitam Gautam','Sunil Ghorasaine'],
+        'Handball': ['Sudan Thapa','Aashish Bohora','Salman Khan','Sunil Ghorasaine'],
+        'Horse Racing': ['Sudan Thapa', 'Aashish Bohora','Sitam Gautam','Valention Rossi','Samita Bhandari'],
+    }[sport];
 
-            }[sport];
+    var modal = document.getElementById('playerModal');
+    var list = document.getElementById('playerList');
+    list.innerHTML = '';
+    players.forEach(function(player) {
+        var button = document.createElement('button');
+        button.classList.add('player-button');
+        button.textContent = player;
+        button.onclick = function() { showPlayerDetails(player, sport); };
+        list.appendChild(button);
+    });
 
-            var modal = document.getElementById('playerModal');
-            var list = document.getElementById('playerList');
-            list.innerHTML = ''; // Clear previous entries
-            players.forEach(function(player) {
-                var li = document.createElement('li');
-                li.textContent = player;
-                list.appendChild(li);
-            });
+    document.getElementById('modalTitle').textContent = sport + ' Players';
+    modal.style.display = 'block';
+}
 
-            document.getElementById('modalTitle').textContent = sport + ' Players';
-            modal.style.display = 'block';
+        function showPlayerDetails(playerName, sport) {
+
+            var details = {
+            name: playerName,
+            age: '25',
+            contact: '123-456-7890',
+            email: 'example@example.com',
+            social: playerName,
+            address: '123 Main St, City'
+        };
+
+            document.getElementById('playerName').textContent = 'Name: ' + details.name;
+            document.getElementById('playerAge').textContent = 'Age: ' + details.age;
+            document.getElementById('playerContact').textContent = 'Contact: ' + details.contact;
+            document.getElementById('playerEmail').textContent = 'Email: ' + details.email;
+            document.getElementById('playerSocial').textContent = 'Social: ' + details.social;
+            document.getElementById('playerAddress').textContent = 'Address: ' + details.address;
+    
+            document.getElementById('detailsModal').style.display = 'block';
         }
 
-        function closeModal() {
+            function closeModal() {
             document.getElementById('playerModal').style.display = 'none';
         }
+
+            function closeDetailsModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
 
         function filterSports() {
             var input = document.getElementById('search-input');
