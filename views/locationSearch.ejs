@@ -67,7 +67,7 @@
         </div>
         <div class="search-container">
             <input type="text" placeholder="Search locations..." id="search-input">
-            <button onclick="filterLocations()">Search</button>
+            <button onclick="searchLocations()">Search</button>
         </div>
         <div class="map-container">
             <div id="map"></div>
@@ -76,75 +76,70 @@
 
     <script>
         function initMap() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            var userLocation = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude
-            };
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
 
-            var mapOptions = {
-                center: userLocation,
-                zoom: 12 // Closer zoom to show nearby area
-            };
+                    var mapOptions = {
+                        center: userLocation,
+                        zoom: 12
+                    };
 
-            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                    window.map = map;
 
-            // Optionally add a marker for the user's location
-            new google.maps.Marker({
-                position: userLocation,
-                map: map,
-                title: 'Your Location'
-            });
-
-            // Add more markers here for other locations if available
-            // You can loop through an array of locations and add markers for each
-            /* Example:
-            var locations = [{lat: -34.397, lng: 150.644}, {lat: -34.390, lng: 150.650}];
-            locations.forEach(function(location) {
-                new google.maps.Marker({
-                    position: location,
-                    map: map,
-                    title: 'Location Title' // You can dynamically assign titles based on your location data
+                    new google.maps.Marker({
+                        position: userLocation,
+                        map: map,
+                        title: 'Your Location'
+                    });
+                }, function() {
+                    handleLocationError(true, window.map.getCenter());
                 });
-            });
-            */
-        }, function() {
-            handleLocationError(true, map.getCenter());
-        });
-    } else {
-        // Browser doesn't support Geolocation
-        handleLocationError(false);
-    }
-}
-
-function handleLocationError(browserHasGeolocation, pos) {
-    var infoWindow = new google.maps.InfoWindow({map: map});
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(browserHasGeolocation ?
-                          'Error: The Geolocation service failed.' :
-                          'Error: Your browser doesn\'t support geolocation.');
-}
-
-
-        function filterLocations() {
-            var input = document.getElementById('search-input');
-            var filter = input.value.toUpperCase();
-            var ul = document.getElementById('locations-list');
-            var cards = ul.getElementsByClassName('location-card');
-
-            for (var i = 0; i < cards.length; i++) {
-                var txtValue = cards[i].textContent || cards[i].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                    cards[i].style.display = "";
-                } else {
-                    cards[i].style.display = "none";
-                }
+            } else {
+                handleLocationError(false);
             }
         }
-    </script>
 
+        function searchLocations() {
+            var searchText = document.getElementById('search-input').value;
+            var request = {
+                location: window.map.getCenter(),
+                radius: '5000',
+                query: searchText
+            };
+
+            var service = new google.maps.places.PlacesService(window.map);
+            service.textSearch(request, function(results, status) {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    results.forEach(function(place) {
+                        new google.maps.Marker({
+                            position: place.geometry.location,
+                            map: window.map,
+                            title: place.name
+                        });
+                    });
+
+                    if (results[0]) {
+                        window.map.setCenter(results[0].geometry.location);
+                    }
+                }
+            });
+        }
+
+        function handleLocationError(browserHasGeolocation, pos) {
+            var infoWindow = new google.maps.InfoWindow({map: window.map});
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                                  'Error: The Geolocation service failed.' :
+                                  'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(window.map);
+        }
+    </script>
     <script src="/js/materialize.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUX794y5u1d8F-L9tGsp0uuHkJSoiXwfA&callback=initMap" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUX794y5u1d8F-L9tGsp0uuHkJSoiXwfA&callback=initMap&libraries=places" async defer></script>
 </body>
 </html>
