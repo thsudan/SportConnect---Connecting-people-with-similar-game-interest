@@ -39,7 +39,7 @@ describe('API Tests', function() {
   describe('Player Listing and Details', function() {
     it('should display a list of players for a specific sport', function(done) {
       chai.request(server)
-        .get('/sports-list/Football')  // Adjust the URL as per your routing
+        .get('/sports-list/Football')
         .end(function(err, res) {
           if (err) return done(err);
           expect(res).to.have.status(200);
@@ -61,11 +61,35 @@ describe('API Tests', function() {
 
     it('should provide details for a specific player when requested', function(done) {
       chai.request(server)
-        .get('/player-details/1')  // Adjust the ID as per your data
+        .get('/player-details/1')
         .end(function(err, res) {
           if (err) return done(err);
           expect(res).to.have.status(200);
           expect(res.body).to.include.keys(['name', 'age', 'sport', 'contact']);
+          done();
+        });
+    });
+  });
+
+  // Added Usability Tests
+  describe('Usability Tests', function() {
+    it('should ensure all navigation links are accessible', function(done) {
+      chai.request(server)
+        .get('/')
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.text).to.include('href="/login"');      // Check for login link
+          expect(res.text).to.include('href="/dashboard"');  // Check for dashboard link
+          done();
+        });
+    });
+
+    it('should maintain visual consistency across main pages', function(done) {
+      chai.request(server)
+        .get('/')
+        .end(function(err, res) {
+          if (err) return done(err);
+          expect(res.text).to.include('<link rel="stylesheet" href="/style.css">');
           done();
         });
     });
