@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.banner {
+    width: 100%;
+    height: 100vh;
+    background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url(image.png);
+    background-size: cover;
+    background-position: center;
+}
+
+.navbar {
+    width: 90%;
+    background-color: #004d40;
+    height: 14%;
+    margin: auto;
+    padding: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    top: 50px;
+    right: 20px;
+}
+
+.logo {
+    height: 20vh;
+    width: 300px;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 0px; 
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    align-items: cover; 
+    margin-top: 10px; 
+}
+
+.navbar ul li {
+    margin: 0 10px; 
+    margin: 20px 18px; 
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 15px; 
+    padding: 20px 0; 
+    transition: color 0.3s ease, font-size 0.3s ease; 
+}
+
+.navbar ul li a:hover {
+    color: #009688; 
+    font-size: 15px; 
+}
+
+.navbar ul li a::after {
+    content: '';
+    height: 3px;
+    width: 0%;
+    background: #009688;
+    display: block;
+    transition: width 0.3s ease; 
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+.top-buttons {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    width: 300px; 
+    padding: 15px 0; 
+    text-align: center;
+    margin: 20px 10px;
+    border-radius: 30px; 
+    font-weight: bold;
+    font-size: 16px;
+    border: 2px solid #009688;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+button span {
+    background: #009688;
+    height: 100%;
+    width: 0%;
+    border-radius: 0px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: -1;
+    transition: width 0.5s;
+}
+
+button:hover span {
+    width: 100%;
+}
+
+button:hover {
+    border: none;
+}
+
+.login-btn, .signup-btn {
+    width: 90px;
+    padding: 10px 0;
+    padding: 0 10px;
+    border-radius: 20px;
+    background: #838383;
+    color: #000000;
+    border: 0.5px solid #40392a;
+}
+
+.login-btn + .signup-btn {
+    margin-top: 0px;
+}
+
+.login-btn span, .signup-btn span {
+    background: #fff;
+}
+
+button:hover {
+    border: 2px solid #fff;
+    color: #fff;
+}
+
+.login-btn:hover {
+    color: #009688;
+}
+
+.signup-btn:hover {
+    color: #009688;
+}
+
+.content {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: #fff;
+}
+
+.content h1 {
+    font-size: 70px;
+    margin-top: 50px;
+}
+
+.content p {
+    margin: 20px auto;
+    font-weight: 100;
+    line-height: 25px;
+}

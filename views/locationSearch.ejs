@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Location search</title>
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Arial', sans-serif;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .content {
+            background: linear-gradient(to bottom, rgba(0,77,64,0.7), rgba(0,77,64,0.7)), url('/sportssenter.png');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        .headline, .map-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 21px;
+            border-radius: 5px;
+            margin: 10px;
+            text-align: center;
+            width: 80%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .map-container {
+            height: 400px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .search-container {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-container input, .search-container button {
+            padding: 10px;
+            margin: 5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .headline, .map-container {
+                width: 100%;
+            }
+
+            .search-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-container input, .search-container button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <div class="headline">
+            <h1>SEARCH SPORTS SERVICES BY LOCATION</h1>
+            <p>Discover local sports facilities and connect with fellow players and sports enthusiasts in your area.</p>
+        </div>
+        <div class="search-container">
+            <input type="text" placeholder="Search places or services" id="search-input">
+            <button onclick="searchLocations()">Search</button>
+        </div>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        let map, infoWindow, directionsService, directionsRenderer;
+        let userPosition = null; // Global variable to store user's location
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 12
+            });
+            infoWindow = new google.maps.InfoWindow();
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer();
+            directionsRenderer.setMap(map);
+
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    userPosition = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    // Create a marker at the user's location
+                    const userMarker = new google.maps.Marker({
+                        position: userPosition,
+                        map: map,
+                        title: 'Your Location',
+                        icon: {
+                            url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png' // Optional: Custom icon
+                        }
+                    });
+
+                    // Attach an info window to the marker
+                    userMarker.addListener('click', () => {
+                        infoWindow.setContent('You are here.');
+                        infoWindow.open(map, userMarker);
+                    });
+
+                    map.setCenter(userPosition);
+                }, () => {
+                    handleLocationError(true, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, map.getCenter());
+            }
+        }
+
+        function searchLocations() {
+            const searchText = document.getElementById('search-input').value;
+            if (!searchText) {
+                alert('Please enter a search term.');
+                return;
+            }
+
+            const request = {
+                location: userPosition || map.getCenter(),
+                radius: '5000',
+                query: searchText
+            };
+
+            const service = new google.maps.places.PlacesService(map);
+            service.textSearch(request, (results, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    map.setCenter(results[0].geometry.location);
+                    // Clear previous markers and directions
+                    clearMarkers();
+                    directionsRenderer.set('directions', null);
+                    results.forEach(place => {
+                        createMarker(place);
+                    });
+                } else {
+                    alert('No results found for your search.');
+                }
+            });
+        }
+
+        let markersArray = []; // Array to keep track of markers
+
+        function createMarker(place) {
+            const marker = new google.maps.Marker({
+                map: map,
+                position: place.geometry.location,
+                title: place.name
+            });
+
+            markersArray.push(marker); // Keep track of markers
+
+            // Add info window to each marker
+            const placeInfoWindow = new google.maps.InfoWindow({
+                content: `<strong>${place.name}</strong><br>${place.formatted_address || ''}`
+            });
+
+            marker.addListener('click', () => {
+                placeInfoWindow.open(map, marker);
+
+                // Show directions from user's location to the place
+                if (userPosition) {
+                    directionsService.route({
+                        origin: userPosition,
+                        destination: place.geometry.location,
+                        travelMode: google.maps.TravelMode.DRIVING
+                    }, (response, status) => {
+                        if (status === 'OK') {
+                            directionsRenderer.setDirections(response);
+                        } else {
+                            window.alert('Directions request failed due to ' + status);
+                        }
+                    });
+                } else {
+                    alert('User location not available.');
+                }
+            });
+        }
+
+        function clearMarkers() {
+            for (let i = 0; i < markersArray.length; i++) {
+                markersArray[i].setMap(null);
+            }
+            markersArray = [];
+        }
+
+        function handleLocationError(browserHasGeolocation, pos) {
+            infoWindow.setPosition(pos || { lat: 0, lng: 0 });
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed. Please allow location access.' :
+                'Error: Your browser doesn\'t support geolocation.');
+            infoWindow.open(map);
+            map.setCenter(pos || { lat: 0, lng: 0 });
+        }
+    </script>
+    <!-- Materialize JS (optional) -->
+    <script src="/js/materialize.min.js"></script>
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUX794y5u1d8F-L9tGsp0uuHkJSoiXwfA&callback=initMap&libraries=places" async defer></script>
+</body>
+</html>
